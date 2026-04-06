@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Censo — capturas por lote</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>Capturas mapa censo</h1>
+      <p class="lead">
+        Pegue las referencias catastrales (o prefijos únicos), <strong>una por línea</strong>. Se generará un
+        archivo ZIP con los PNG y manifest.json para subir a la app.
+      </p>
+
+      <label class="lbl" for="url">URL del visor (municipio)</label>
+      <input id="url" type="url" class="inp" spellcheck="false" />
+
+      <label class="lbl" for="refs">Referencias catastrales</label>
+      <textarea id="refs" class="ta" rows="14" placeholder="Una referencia por línea"></textarea>
+
+      <div class="row">
+        <div class="field">
+          <label class="lbl" for="zoom">Nivel zoom</label>
+          <input
+            id="zoom"
+            type="number"
+            class="inp inp-sm"
+            min="1"
+            max="30"
+            value="5"
+            title="Pulsaciones + en la 1ª parcela del lote; el resto mantiene el mismo zoom"
+          />
+          <p class="field-hint">Solo en la primera captura del lote; las demás usan el mismo zoom.</p>
+        </div>
+      </div>
+
+      <button type="button" id="btn" class="btn">Generar ZIP</button>
+
+      <section class="log" aria-live="polite">
+        <h2>Registro</h2>
+        <pre id="log"></pre>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

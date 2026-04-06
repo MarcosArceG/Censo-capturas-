@@ -1,0 +1,62 @@
+{
+  "name": "censo-playwright",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "main": "electron/main.mjs",
+  "description": "Capturas Playwright del mapa del censo (CLI y app de escritorio)",
+  "scripts": {
+    "probe": "node click-probe.mjs",
+    "probe:scroll": "node scroll-probe.mjs",
+    "capture": "node capture-batch.mjs",
+    "analyze-zoom-png": "node scripts/analyze-zoom-png.mjs",
+    "install:browsers": "playwright install chromium",
+    "app": "electron .",
+    "dist": "electron-builder --win --x64",
+    "dist:win": "electron-builder --win --x64"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "playwright": "^1.50.0"
+  },
+  "devDependencies": {
+    "electron": "^33.4.0",
+    "electron-builder": "^25.1.8",
+    "sharp": "^0.33.5"
+  },
+  "build": {
+    "appId": "com.gestiondelamianto.censo.capture",
+    "productName": "CensoCapturas",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "renderer/**/*",
+      "lib/**/*",
+      "map-clip.mjs",
+      "package.json"
+    ],
+    "asarUnpack": ["**/node_modules/playwright/**/*"],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "executableName": "CensoCapturas"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Censo capturas",
+      "uninstallDisplayName": "Censo capturas",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
