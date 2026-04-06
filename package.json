@@ -5,6 +5,7 @@
   "type": "module",
   "main": "electron/main.mjs",
   "description": "Capturas Playwright del mapa del censo (CLI y app de escritorio)",
+  "author": "Gestión del amianto",
   "scripts": {
     "probe": "node click-probe.mjs",
     "probe:scroll": "node scroll-probe.mjs",
@@ -12,8 +13,8 @@
     "analyze-zoom-png": "node scripts/analyze-zoom-png.mjs",
     "install:browsers": "playwright install chromium",
     "app": "electron .",
-    "dist": "electron-builder --win --x64",
-    "dist:win": "electron-builder --win --x64"
+    "dist": "electron-builder --win --x64 --publish never",
+    "dist:win": "electron-builder --win --x64 --publish never"
   },
   "dependencies": {
     "archiver": "^7.0.1",
@@ -27,6 +28,7 @@
   "build": {
     "appId": "com.gestiondelamianto.censo.capture",
     "productName": "CensoCapturas",
+    "publish": null,
     "directories": {
       "output": "release"
     },
