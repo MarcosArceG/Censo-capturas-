@@ -12,6 +12,8 @@ npx playwright install chromium
 
 (Requiere **Node.js** instalado, o ver [RELEASE-WINDOWS.md](./RELEASE-WINDOWS.md) para alternativas.)
 
+Si en lugar del instalador van a **clonar o descomprimir el código** y arrancar todo desde consola: **`npm ci`**, **`npx playwright install chromium`** y **`npm run app`** en la carpeta del proyecto. Detalle paso a paso en [COMANDOS.md](./COMANDOS.md).
+
 ---
 
 ## 2. Generar el `.exe` **no** se hace en Mac
