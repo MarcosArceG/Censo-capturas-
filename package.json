@@ -13,11 +13,13 @@
     "analyze-zoom-png": "node scripts/analyze-zoom-png.mjs",
     "install:browsers": "playwright install chromium",
     "app": "electron .",
+    "server": "node server.mjs",
     "dist": "electron-builder --win --x64 --publish never",
     "dist:win": "electron-builder --win --x64 --publish never"
   },
   "dependencies": {
     "archiver": "^7.0.1",
+    "express": "^4.21.2",
     "playwright": "^1.50.0"
   },
   "devDependencies": {

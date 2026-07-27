@@ -8,6 +8,8 @@ Herramienta mínima para **localizar en la terminal** dónde pinchas en el mapa 
 
 **Entrega a cliente / soporte:** revisar **[ENTREGA-CLIENTE.md](./ENTREGA-CLIENTE.md)** (Chromium, GitHub Actions, estructura del repo).
 
+**Servidor de la oficina (mini PC «droppy»):** cómo está montado y cómo actualizarlo, en **[DESPLIEGUE-DROPPY.md](./DESPLIEGUE-DROPPY.md)**.
+
 ## Instalación (una vez)
 
 ```bash
@@ -81,8 +83,8 @@ Opciones útiles:
 | Flag | Descripción |
 |------|-------------|
 | `--clip full` | Captura `CLIP_MAP_FULL` en lugar del recorte interior |
-| `--zoom-clicks 6` | Veces que se pulsa «+» tras abrir controles (default **5**; solo **primera** ref.) |
-| `--no-zoom` | Sin zoom (ni siquiera en la primera parcela) |
+| `--zoom-clicks 6` | Veces que se pulsa «+» tras abrir controles (default **5**; solo **primera ref. encontrada**) |
+| `--no-zoom` | Sin zoom (ni siquiera en la primera parcela localizada) |
 | `--headless` | Sin ventana (más frágil si hay login manual) |
 | `--step-ms 600` | Más pausa entre pasos |
 
@@ -90,7 +92,7 @@ Salida: PNG por ref en `--out` (default `./out`) y `manifest.json`.
 
 ### Zoom (estrategia actual)
 
-En la **primera** referencia del lote se aplica **abrir controles → N× «+» → cerrar** (por defecto **N = 5**). **No** se vuelve a tocar el zoom en el resto de parcelas: se mantiene el mismo nivel para todo el lote. El técnico puede **repasar a mano** las capturas que queden demasiado pequeñas o grandes.
+En la **primera referencia que se encuentre** en el lote se aplica **abrir controles → N× «+» → cerrar** (por defecto **N = 5**). Si las primeras líneas del listado no existen en el censo, el zoom se aplica al localizar la primera válida (evita capturas demasiado alejadas). **No** se vuelve a tocar el zoom en el resto de parcelas. El técnico puede **repasar a mano** las que queden demasiado pequeñas o grandes.
 
 *(Opcional para desarrollo: `npm run analyze-zoom-png -- ./captura.png` prueba la heurística en `lib/zoomAnalyze.mjs` sobre un PNG suelto; no forma parte del flujo de captura.)*
 
@@ -125,7 +127,7 @@ npm run app
 
 1. Ajusta la **URL del visor** si cambia de municipio.
 2. Pega las refs en el cuadro de texto.
-3. Opcional: **Nivel zoom** (por defecto 5; solo afecta a la primera captura del lote).
+3. Opcional: **Nivel zoom** (por defecto 5; solo en la primera referencia que se localice en el censo).
 4. Pulsa **Generar ZIP** y elige dónde guardar el archivo.
 5. Se abre **Chromium (Playwright)** para el proceso; al terminar se abre la carpeta del ZIP.
 

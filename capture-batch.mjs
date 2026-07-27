@@ -24,8 +24,6 @@ function parseArgs(argv) {
     zoomClicks: 5,
     noZoom: false,
     headless: false,
-    stepMs: 400,
-    buscarModal: false,
     positional: [],
   };
   for (let i = 2; i < argv.length; i++) {
@@ -45,10 +43,6 @@ function parseArgs(argv) {
       out.noZoom = true;
     } else if (a === "--headless") {
       out.headless = true;
-    } else if (a === "--step-ms" && argv[i + 1]) {
-      out.stepMs = Math.max(0, parseInt(argv[++i], 10) || 0);
-    } else if (a === "--buscar-modal") {
-      out.buscarModal = true;
     } else if (!a.startsWith("-")) {
       out.positional.push(a);
     }
@@ -83,21 +77,17 @@ async function main() {
     process.exit(1);
   }
 
-  const outDir = resolve(cfg.outDir);
-
   try {
     await runCaptureJob({
       url: cfg.url,
       refs: cfg.refs,
-      outDir,
+      outDir: resolve(cfg.outDir),
       clip: cfg.clip,
       zoomClicks: cfg.zoomClicks,
       noZoom: cfg.noZoom,
       headless: cfg.headless,
-      stepMs: cfg.stepMs,
-      buscarModal: cfg.buscarModal,
       onLog: (msg) => console.log(msg),
-      onProgress: (i, t, ref) => {},
+      onProgress: () => {},
     });
     console.log("\nListo.\n");
   } catch (e) {
