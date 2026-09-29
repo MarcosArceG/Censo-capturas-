@@ -1,0 +1,12 @@
+# Para Coolify («Docker Compose») o `docker compose up -d --build` en el VPS.
+services:
+  capturas:
+    build: .
+    restart: unless-stopped
+    environment:
+      # Obligatorio en el VPS: la webapp de informes envía el mismo valor (CENSUS_CAPTURE_TOKEN).
+      CAPTURE_API_TOKEN: ${CAPTURE_API_TOKEN:?Falta CAPTURE_API_TOKEN}
+    # Chromium se queda sin memoria compartida con los 64 MB que Docker da por defecto.
+    shm_size: 1gb
+    ports:
+      - "3000:3000"

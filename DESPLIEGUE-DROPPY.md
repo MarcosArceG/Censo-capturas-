@@ -108,3 +108,34 @@ extensión de red del sistema, reinicia estos permisos.
 - **Los ZIP viven en `/tmp`** y se borran al descargarlos. Un lote que se genere y nadie descargue
   se queda ahí ocupando sitio hasta el siguiente reinicio de la máquina.
 - **Reiniciar corta el lote en curso** sin avisar al técnico: su descarga nunca llega.
+
+## Sustituto: servicio en el VPS (septiembre 2026)
+
+La misma app corre en Docker en el VPS (`Dockerfile` + `docker-compose.yml` de esta carpeta) y la
+webapp de informes la usa directamente. Ya no hay ZIP que descargar y subir:
+
+- **Al crear un municipio** con CSV + «URL del visor del censo», la webapp encola todas las
+  referencias en lotes de 40. El servicio los captura de uno en uno y, al acabar cada lote, avisa a
+  la webapp (`POST /api/census-capture/callback`, con el mismo token), que se trae el ZIP e importa
+  capturas + GPS. No hace falta tener ninguna pestaña abierta.
+- **Editar municipio → «Capturas del censo»**: progreso, «Capturar pendientes» (lo que no tenga
+  captura o ubicación), «Recapturar todas» y «Cancelar capturas».
+
+Puesta en marcha:
+
+1. En Coolify: recurso «Docker Compose» desde este repo. Variable `CAPTURE_API_TOKEN` = cadena
+   larga aleatoria (`openssl rand -hex 32`). Dominio con HTTPS (p. ej. `capturas.<dominio>`),
+   puerto 3000.
+2. En la webapp: `CENSUS_CAPTURE_URL=https://capturas.<dominio>`, `CENSUS_CAPTURE_TOKEN=<el mismo
+   token>` y, si la webapp está en el VPS, `APP_PUBLIC_URL=https://<dominio de la webapp>`.
+   Redesplegar.
+3. Comprobar: `curl https://capturas.<dominio>/api/health` → `{"ok":true,...}` y crear o editar un
+   municipio pequeño.
+
+Notas:
+
+- La cola vive en memoria: si el contenedor se reinicia se pierden los lotes pendientes, pero
+  «Capturar pendientes» retoma exactamente lo que falte.
+- Con token definido, la página web antigua (`/`) ya no puede lanzar capturas.
+- `HEADLESS=1` arranca Chromium sin ventana (probado: captura igual); por defecto sigue visible
+  sobre Xvfb, como en droppy.
